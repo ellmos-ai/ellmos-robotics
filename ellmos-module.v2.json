@@ -1,0 +1,13 @@
+{
+  "schema": "ellmos.module.v2",
+  "id": "ellmos-robotics",
+  "name": "ellmos-robotics",
+  "version": "0.1.0",
+  "category": "robotics-embodied-ai",
+  "description": "Canonical MCP standard (ellmos.robotics.mcp.v1), drivers (ROS 2, ESP32, LeRobot, MAVLink), and safety envelope.",
+  "repository": "https://github.com/ellmos-ai/ellmos-robotics",
+  "entrypoints": {
+    "python": "ellmos_robotics.mcp_standard",
+    "cli": "ellmos_robotics.cli:main"
+  }
+}
