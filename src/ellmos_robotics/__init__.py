@@ -8,6 +8,7 @@ from .mcp_standard import (
     RoboticsSafetyViolationError,
     Ros2BridgeDriver,
     SerialEsp32Driver,
+    default_estop_path,
 )
 
 __all__ = [
@@ -18,6 +19,7 @@ __all__ = [
     "RoboticsSafetyViolationError",
     "Ros2BridgeDriver",
     "SerialEsp32Driver",
+    "default_estop_path",
 ]
 
 __version__ = "0.1.0"

@@ -11,6 +11,7 @@ from .mcp_standard import RoboticsHub
 
 def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog="ellmos-robotics", description="ellmos.robotics.mcp.v1 CLI")
+    parser.add_argument("--state-path", default=None, help="Path to persisted E-Stop state file")
     sub = parser.add_subparsers(dest="cmd", required=True)
 
     sub.add_parser("capabilities", help="Show robot capabilities and safety envelope")
@@ -31,7 +32,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     stop_p.add_argument("--reason", default="cli_e_stop")
 
     args = parser.parse_args(argv)
-    hub = RoboticsHub()
+    hub = RoboticsHub(state_path=args.state_path)
 
     if args.cmd == "capabilities":
         print(json.dumps(hub.robot_capabilities(), indent=2, ensure_ascii=False))
