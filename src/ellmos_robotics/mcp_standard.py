@@ -14,6 +14,14 @@ class RoboticsSafetyViolationError(PermissionError):
     """Raised when a robotics actuation or navigation violates the safety envelope or E-Stop."""
 
 
+def default_estop_path() -> Path:
+    """Return default shared E-Stop path matching BACH ~/.bach/robotics_estop.json (PB-13)."""
+    env = os.environ.get("BACH_ROBOTICS_ESTOP_PATH")
+    if env:
+        return Path(env)
+    return Path.home() / ".bach" / "robotics_estop.json"
+
+
 @dataclass
 class RoboticsSafetyEnvelope:
     max_speed_mps: float = 0.5
@@ -93,7 +101,11 @@ class RoboticsHub:
         self.envelope = envelope or RoboticsSafetyEnvelope()
         self.robotics_permission = robotics_permission
         # With state_path the E-Stop survives new hub instances and restarts (fail-closed).
-        self.state_path = Path(state_path) if state_path else None
+        # Defaults to shared path (or BACH_ROBOTICS_ESTOP_PATH) matching BACH ~/.bach/robotics_estop.json (PB-13, #3996)
+        if state_path is None:
+            self.state_path = default_estop_path()
+        else:
+            self.state_path = Path(state_path)
         self.drivers = {
             Ros2BridgeDriver.driver_id: Ros2BridgeDriver(),
             SerialEsp32Driver.driver_id: SerialEsp32Driver(),

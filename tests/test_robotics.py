@@ -3,14 +3,24 @@
 from __future__ import annotations
 
 import json
+from pathlib import Path
 import pytest
 
 from ellmos_robotics import (
     RoboticsHub,
     RoboticsSafetyEnvelope,
     RoboticsSafetyViolationError,
+    default_estop_path,
 )
 from ellmos_robotics.cli import main
+
+
+@pytest.fixture(autouse=True)
+def isolate_estop_env(tmp_path, monkeypatch):
+    """Ensure tests never mutate or read ~/.bach/robotics_estop.json by default (PB-13)."""
+    dummy_estop = tmp_path / "isolated_estop.json"
+    monkeypatch.setenv("BACH_ROBOTICS_ESTOP_PATH", str(dummy_estop))
+    return dummy_estop
 
 
 def test_capabilities_and_telemetry():
@@ -107,3 +117,48 @@ def test_robotics_results_are_marked_demo():
     assert hub.robot_actuate("gripper", 0.1)["demo"] is True
     assert hub.robot_navigate(0.1, 0.1)["demo"] is True
     assert hub.robot_stop_emergency()["demo"] is True
+
+
+def test_default_shared_estop_path_respects_env_var(tmp_path, monkeypatch):
+    custom_target = tmp_path / "custom_shared_estop.json"
+    monkeypatch.setenv("BACH_ROBOTICS_ESTOP_PATH", str(custom_target))
+    assert default_estop_path() == custom_target
+    hub = RoboticsHub()
+    assert hub.state_path == custom_target
+
+    # Trigger E-Stop and verify it writes to custom_target
+    hub.robot_stop_emergency("shared_test")
+    assert custom_target.is_file()
+    data = json.loads(custom_target.read_text(encoding="utf-8"))
+    assert data["reason"] == "shared_test"
+
+    # New Hub reads the same shared file
+    fresh = RoboticsHub()
+    assert fresh.robot_telemetry()["emergency_stopped"] is True
+
+
+def test_default_shared_estop_path_falls_back_to_bach_home(monkeypatch):
+    monkeypatch.delenv("BACH_ROBOTICS_ESTOP_PATH", raising=False)
+    expected = Path.home() / ".bach" / "robotics_estop.json"
+    assert default_estop_path() == expected
+    hub = RoboticsHub()
+    assert hub.state_path == expected
+
+
+def test_cli_persists_to_shared_default_estop(tmp_path, monkeypatch, capsys):
+    cli_target = tmp_path / "cli_estop.json"
+    monkeypatch.setenv("BACH_ROBOTICS_ESTOP_PATH", str(cli_target))
+
+    assert main(["estop", "--reason", "cli_hazard"]) == 0
+    out = json.loads(capsys.readouterr().out)
+    assert out["status"] == "emergency_stopped"
+    assert out["persisted"] is True
+
+    assert cli_target.is_file()
+    saved = json.loads(cli_target.read_text(encoding="utf-8"))
+    assert saved["reason"] == "cli_hazard"
+
+    # Verify a new hub picks it up
+    hub = RoboticsHub()
+    assert hub.robot_telemetry()["emergency_stopped"] is True
+
