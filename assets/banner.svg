@@ -1,0 +1,144 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 300" width="1200" height="300">
+  <defs>
+    <style>
+      .font-sans {
+        font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+      }
+      .font-mono {
+        font-family: 'Cascadia Code', Consolas, Monaco, monospace;
+      }
+    </style>
+
+    <!-- Background Gradients -->
+    <linearGradient id="bg-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#080c14" />
+      <stop offset="50%" stop-color="#0f172a" />
+      <stop offset="100%" stop-color="#07090e" />
+    </linearGradient>
+
+    <!-- Title Gradient -->
+    <linearGradient id="title-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#ffffff" />
+      <stop offset="65%" stop-color="#e2e8f0" />
+      <stop offset="100%" stop-color="#f97316" />
+    </linearGradient>
+
+    <!-- Ambient Glow Radials -->
+    <radialGradient id="glow-p" cx="170" cy="140" r="200" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#c2410c" stop-opacity="0.22" />
+      <stop offset="100%" stop-color="#080c14" stop-opacity="0" />
+    </radialGradient>
+    <radialGradient id="glow-s" cx="550" cy="160" r="220" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#dc2626" stop-opacity="0.12" />
+      <stop offset="100%" stop-color="#080c14" stop-opacity="0" />
+    </radialGradient>
+
+    <!-- Drop Shadow Filter for Glassmorphic Elements -->
+    <filter id="drop-shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="10" flood-color="#000000" flood-opacity="0.6" />
+    </filter>
+  </defs>
+
+  <!-- Background Base Layer -->
+  <rect width="1200" height="300" fill="url(#bg-grad)" />
+
+  <!-- Technical Coordinate Grid Overlay -->
+  <g opacity="0.07" stroke="#94a3b8" stroke-width="1">
+    <path d="M0 50 H1200 M0 100 H1200 M0 150 H1200 M0 200 H1200 M0 250 H1200" />
+    <path d="M100 0 V300 M200 0 V300 M300 0 V300 M400 0 V300 M500 0 V300 M600 0 V300 M700 0 V300 M800 0 V300 M900 0 V300 M1000 0 V300 M1100 0 V300" />
+  </g>
+
+  <!-- Ambient Glow Orbs -->
+  <circle cx="170" cy="140" r="200" fill="url(#glow-p)" />
+  <circle cx="550" cy="160" r="220" fill="url(#glow-s)" />
+
+  <!-- Left Accent Bar -->
+  <rect x="0" y="0" width="5" height="300" fill="#f97316" />
+
+  <!-- Left Domain Graphic Motif (x=40..310, y=30..270) -->
+  
+    <!-- Ellmos Robotics: MCP Standard, Articulated Arm & E-Stop Envelope -->
+    <g transform="translate(45, 35)">
+      <!-- 3D Spatial Bounding Safety Envelope -->
+      <g stroke="#334155" stroke-width="1" stroke-dasharray="3 3" fill="none">
+        <polygon points="50,45 130,25 200,50 120,70"/>
+        <line x1="50" y1="45" x2="50" y2="135"/>
+        <line x1="130" y1="25" x2="130" y2="115"/>
+        <line x1="200" y1="50" x2="200" y2="140"/>
+        <polygon points="50,135 120,160 200,140" />
+      </g>
+
+      <!-- Articulated Robotic Arm Linkages -->
+      <rect x="75" y="145" width="45" height="15" rx="4" fill="#18181b" stroke="#f97316" stroke-width="1.8"/>
+      <circle cx="97" cy="145" r="6" fill="#f97316"/>
+
+      <line x1="97" y1="145" x2="130" y2="95" stroke="#f97316" stroke-width="5" stroke-linecap="round"/>
+      <circle cx="130" cy="95" r="7" fill="#0f172a" stroke="#dc2626" stroke-width="2"/>
+
+      <line x1="130" y1="95" x2="175" y2="75" stroke="#dc2626" stroke-width="4" stroke-linecap="round"/>
+      <circle cx="175" cy="75" r="5" fill="#f97316"/>
+
+      <path d="M 175 75 L 188 68 M 188 68 L 195 72" stroke="#f97316" stroke-width="2.5" stroke-linecap="round"/>
+      <path d="M 175 75 L 188 82 M 188 82 L 195 78" stroke="#f97316" stroke-width="2.5" stroke-linecap="round"/>
+
+      <!-- Prominent Industrial E-STOP Button -->
+      <g transform="translate(30, 140)">
+        <rect width="42" height="42" rx="8" fill="#450a0a" stroke="#dc2626" stroke-width="1.8" filter="url(#drop-shadow)"/>
+        <circle cx="21" cy="21" r="14" fill="#dc2626" stroke="#fca5a5" stroke-width="1.5"/>
+        <text x="7" y="24" class="font-mono" font-size="7.5" font-weight="900" fill="#ffffff">E-STOP</text>
+      </g>
+
+      <!-- Tool Standard Label at Bottom -->
+      <g transform="translate(80, 185)">
+        <rect width="135" height="18" rx="4" fill="#0f172a" stroke="#f97316" stroke-width="1"/>
+        <text x="8" y="13" class="font-mono" font-size="7.5" font-weight="700" fill="#f97316">MCP: ellmos.robotics.v1</text>
+      </g>
+    </g>
+    
+
+  <!-- Vertical Divider Line -->
+  <line x1="330" y1="35" x2="330" y2="265" stroke="#334155" stroke-width="1" stroke-dasharray="4 4" opacity="0.4"/>
+
+  <!-- Right Branding & Meta Information (x=360..1160) -->
+  <g transform="translate(360, 0)">
+    <!-- Top Category Badge -->
+    <g transform="translate(0, 48)">
+      <rect width="301.6" height="24" rx="5" fill="#f97316" fill-opacity="0.14" stroke="#f97316" stroke-width="1"/>
+      <text x="12" y="16" class="font-mono" font-size="10.5" font-weight="700" letter-spacing="1.2" fill="#f97316">ELLMOS-AI // ACTUATION // ROBOTICS MCP</text>
+    </g>
+
+    <!-- Repository Title -->
+    <text x="0" y="122" class="font-sans" font-size="44" font-weight="800" letter-spacing="-1" fill="url(#title-grad)">ellmos-robotics</text>
+
+    <!-- English Subtitle / Tagline -->
+    <text x="0" y="158" class="font-sans" font-size="17" font-weight="500" fill="#94a3b8">Canonical Robotics MCP Tool Standard &amp; Fail-Safe E-Stop Envelope</text>
+
+    <!-- Feature Pills -->
+    <g transform="translate(0, 214)">
+      
+        <g transform="translate(0, 0)">
+          <rect width="166" height="30" rx="15" fill="#0f172a" stroke="#f97316" stroke-width="1.2"/>
+          <text x="83.0" y="19" class="font-sans" font-size="12" font-weight="600" fill="#f1f5f9" text-anchor="middle">🦾 Robotics MCP v1</text>
+        </g>
+        
+
+        <g transform="translate(178, 0)">
+          <rect width="166" height="30" rx="15" fill="#0f172a" stroke="#dc2626" stroke-width="1.2"/>
+          <text x="83.0" y="19" class="font-sans" font-size="12" font-weight="600" fill="#f1f5f9" text-anchor="middle">🛑 Hardware E-Stop</text>
+        </g>
+        
+
+        <g transform="translate(356, 0)">
+          <rect width="203" height="30" rx="15" fill="#0f172a" stroke="#10b981" stroke-width="1.2"/>
+          <text x="101.5" y="19" class="font-sans" font-size="12" font-weight="600" fill="#f1f5f9" text-anchor="middle">📐 3D Bounding Envelope</text>
+        </g>
+        
+
+        <g transform="translate(571, 0)">
+          <rect width="143" height="30" rx="15" fill="#0f172a" stroke="#f59e0b" stroke-width="1.2"/>
+          <text x="71.5" y="19" class="font-sans" font-size="12" font-weight="600" fill="#f1f5f9" text-anchor="middle">🤖 ROS2 &amp; ESP32</text>
+        </g>
+        
+    </g>
+  </g>
+</svg>

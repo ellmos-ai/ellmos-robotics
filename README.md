@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="assets/banner.svg" alt="ellmos-robotics banner" width="100%">
+</p>
+
 # ellmos-robotics
 
 **English** | [Deutsch](README_de.md)
