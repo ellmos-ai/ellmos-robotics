@@ -1,0 +1,58 @@
+# ellmos-robotics — LLM Entry Point
+
+> Canonical MCP robotics tool standard (`ellmos.robotics.mcp.v1`), safety envelope, persistent fail-closed E-Stop, and simulation driver stubs (`ros2_bridge`, `serial_esp32`, `lerobot_embodied`, `mavlink_rover`).
+
+- Package: `ellmos-robotics`
+- Version: `0.1.0`
+- License: `MIT`
+- Status: `early (v0.1.0), simulation only ("demo": true)`
+- Language / Runtime: Python `>=3.10` (zero runtime dependencies; stdlib only)
+- Repository: `https://github.com/ellmos-ai/ellmos-robotics`
+- Product Skill: `SKILL.md`
+- Bilingual Docs: `README.md` (EN), `README_de.md` (DE)
+- Module Manifest: `ellmos-module.v2.json`
+- Last-checked: `2026-11-22`
+
+## 1. Prerequisites
+- Python `>=3.10`
+- Network egress: `none` (local in-memory simulation + local JSON E-Stop state file)
+
+## 2. Installation Command
+```bash
+python -m venv .venv
+.venv/Scripts/python -m pip install -e .
+```
+(On Linux/macOS use `.venv/bin/python -m pip install -e .`)
+
+## 3. Verification Command
+```bash
+pytest -ra -v
+ellmos-robotics --state-path ./estop.json capabilities
+```
+
+## 4. Minimal Example
+```bash
+ellmos-robotics --state-path ./estop.json actuate gripper 0.5 --speed 0.2 --force 5
+ellmos-robotics --state-path ./estop.json estop --reason "operator"
+```
+
+```python
+from ellmos_robotics import RoboticsHub
+
+hub = RoboticsHub(state_path="./estop.json")
+hub.robot_navigate(0.5, 0.5, 0.25)
+hub.robot_stop_emergency("operator")
+```
+
+## 5. Core Interfaces
+- CLI (`src/ellmos_robotics/cli.py`):
+  - `ellmos-robotics [--state-path PATH] capabilities`
+  - `ellmos-robotics [--state-path PATH] telemetry`
+  - `ellmos-robotics [--state-path PATH] actuate <joint> <value> [--speed FLOAT] [--force FLOAT]`
+  - `ellmos-robotics [--state-path PATH] navigate <x> <y> <z>`
+  - `ellmos-robotics [--state-path PATH] estop [--reason TEXT]`
+- Python API (`src/ellmos_robotics/mcp_standard.py`):
+  - `RoboticsHub(envelope=None, *, robotics_permission=True, state_path=None)`
+  - `RoboticsSafetyEnvelope(max_speed_mps=0.5, max_force_n=15.0, bounds_x=(-2.0, 2.0), bounds_y=(-2.0, 2.0), bounds_z=(0.0, 1.8), ...)`
+  - `RoboticsSafetyViolationError` (subclass of `PermissionError`)
+  - `default_estop_path()` (respects `BACH_ROBOTICS_ESTOP_PATH`, fallback `~/.bach/robotics_estop.json`)

@@ -1,0 +1,126 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 520" width="880" height="520" role="img" aria-label="ellmos-robotics CLI and Fail-Closed Safety Envelope Workflow">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0b1120"/>
+      <stop offset="100%" stop-color="#111827"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#f97316"/>
+      <stop offset="100%" stop-color="#ef4444"/>
+    </linearGradient>
+    <style>
+      .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; }
+      .sans { font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+      .title { font-size: 13px; font-weight: 600; fill: #e2e8f0; }
+      .prompt { font-size: 12.5px; fill: #f97316; font-weight: 700; }
+      .cmd { font-size: 12.5px; fill: #f8fafc; }
+      .out { font-size: 12px; fill: #94a3b8; }
+      .ok { font-size: 12px; fill: #34d399; }
+      .warn { font-size: 12px; fill: #fbbf24; }
+      .err { font-size: 12px; fill: #f87171; font-weight: 600; }
+      .key { font-size: 11.5px; fill: #cbd5e1; font-weight: 600; }
+      .val { font-size: 11.5px; fill: #38bdf8; }
+      .card-title { font-size: 12px; font-weight: 700; fill: #f8fafc; letter-spacing: 0.4px; }
+      .muted { font-size: 11px; fill: #94a3b8; }
+    </style>
+  </defs>
+
+  <!-- Outer Frame -->
+  <rect width="880" height="520" rx="14" fill="url(#bg)" stroke="#1e293b" stroke-width="2"/>
+
+  <!-- Top Bar -->
+  <rect x="1" y="1" width="878" height="38" rx="13" fill="#0f172a"/>
+  <rect x="1" y="26" width="878" height="13" fill="#0f172a"/>
+  <line x1="1" y1="39" x2="879" y2="39" stroke="#1e293b" stroke-width="1"/>
+  <circle cx="22" cy="20" r="6" fill="#ef4444"/>
+  <circle cx="42" cy="20" r="6" fill="#f59e0b"/>
+  <circle cx="62" cy="20" r="6" fill="#10b981"/>
+  <text x="440" y="24" text-anchor="middle" class="mono title">ellmos-robotics — ellmos.robotics.mcp.v1 · Safety Envelope &amp; Persistent E-Stop</text>
+
+  <!-- Left Terminal Panel -->
+  <rect x="18" y="54" width="564" height="448" rx="10" fill="#020617" stroke="#1e293b" stroke-width="1.5"/>
+
+  <!-- Step 1: capabilities -->
+  <text x="34" y="80" class="mono prompt">$</text>
+  <text x="48" y="80" class="mono cmd">ellmos-robotics --state-path ./estop.json capabilities</text>
+  <text x="34" y="100" class="mono out">{</text>
+  <text x="48" y="117" class="mono ok">"schema": "ellmos.robotics.mcp.v1",  "demo": true,</text>
+  <text x="48" y="134" class="mono out">"drivers": ["lerobot_embodied", "mavlink_rover", "ros2_bridge", "serial_esp32"],</text>
+  <text x="48" y="151" class="mono out">"joints": ["elbow_flex", "gripper", "shoulder_pan", "wrist_roll"]</text>
+  <text x="34" y="168" class="mono out">}</text>
+
+  <!-- Step 2: safe actuation -->
+  <text x="34" y="196" class="mono prompt">$</text>
+  <text x="48" y="196" class="mono cmd">ellmos-robotics --state-path ./estop.json actuate gripper 0.75 --speed 0.2 --force 4</text>
+  <text x="34" y="216" class="mono ok">{"schema": "ellmos.robotics.mcp.v1", "demo": true, "status": "actuated", "target_value": 0.75}</text>
+
+  <!-- Step 3: emergency stop -->
+  <text x="34" y="246" class="mono prompt">$</text>
+  <text x="48" y="246" class="mono cmd">ellmos-robotics --state-path ./estop.json estop --reason "human_in_zone"</text>
+  <text x="34" y="266" class="mono warn">{"status": "emergency_stopped", "reason": "human_in_zone", "persisted": true}</text>
+
+  <!-- Step 4: blocked across new process -->
+  <text x="34" y="296" class="mono prompt">$</text>
+  <text x="48" y="296" class="mono cmd">ellmos-robotics --state-path ./estop.json navigate 0.5 0.5 0.25</text>
+  <text x="34" y="316" class="mono err">RoboticsSafetyViolationError: E-Stop active (human_in_zone); reset required.</text>
+
+  <!-- Step 5: pytest verification -->
+  <line x1="34" y1="336" x2="566" y2="336" stroke="#1e293b" stroke-width="1" stroke-dasharray="4 4"/>
+  <text x="34" y="360" class="mono prompt">$</text>
+  <text x="48" y="360" class="mono cmd">pytest -ra -v</text>
+  <text x="34" y="382" class="mono ok">tests/test_robotics.py   14 passed  (envelope, fail-closed E-Stop, CLI, demo flag)</text>
+  <text x="34" y="400" class="mono ok">tests/test_metadata.py   contract checks passed (EN/DE parity, P-022, PEP 639)</text>
+
+  <!-- Bottom Simulation Banner inside Terminal -->
+  <rect x="34" y="424" width="532" height="60" rx="8" fill="#172554" stroke="#1d4ed8" stroke-width="1"/>
+  <text x="48" y="447" class="sans" font-size="12" font-weight="700" fill="#93c5fd">SIMULATION-ONLY CONTRACT (v0.1.0)</text>
+  <text x="48" y="466" class="mono" font-size="11.5" fill="#dbeafe">All driver classes are protocol stubs. Every hub response carries "demo": true.</text>
+
+  <!-- Right Sidebar: Safety Envelope & Guarantees -->
+  <rect x="598" y="54" width="264" height="214" rx="10" fill="#0f172a" stroke="#334155" stroke-width="1.5"/>
+  <rect x="598" y="54" width="264" height="4" rx="2" fill="url(#accent)"/>
+  <text x="614" y="80" class="sans card-title">SAFETY ENVELOPE DEFAULTS</text>
+  <line x1="614" y1="90" x2="846" y2="90" stroke="#1e293b" stroke-width="1"/>
+
+  <text x="614" y="112" class="mono key">max_speed_mps</text>
+  <text x="846" y="112" text-anchor="end" class="mono val">0.5 m/s</text>
+
+  <text x="614" y="134" class="mono key">max_force_n</text>
+  <text x="846" y="134" text-anchor="end" class="mono val">15.0 N</text>
+
+  <text x="614" y="156" class="mono key">bounds_x / y</text>
+  <text x="846" y="156" text-anchor="end" class="mono val">[-2.0, 2.0] m</text>
+
+  <text x="614" y="178" class="mono key">bounds_z</text>
+  <text x="846" y="178" text-anchor="end" class="mono val">[0.0, 1.8] m</text>
+
+  <text x="614" y="200" class="mono key">collision_guard</text>
+  <text x="846" y="200" text-anchor="end" class="mono val">human_in_zone</text>
+
+  <text x="614" y="222" class="mono key">estop_state</text>
+  <text x="846" y="222" text-anchor="end" class="mono warn">atomic JSON</text>
+
+  <text x="614" y="248" class="sans muted">Corrupted E-Stop JSON -&gt; fail-closed STOP</text>
+
+  <!-- Right Sidebar Bottom: Driver Profiles & Permission Gate -->
+  <rect x="598" y="282" width="264" height="220" rx="10" fill="#0f172a" stroke="#334155" stroke-width="1.5"/>
+  <text x="614" y="308" class="sans card-title">DRIVER PROFILES (STUBS)</text>
+  <line x1="614" y1="318" x2="846" y2="318" stroke="#1e293b" stroke-width="1"/>
+
+  <text x="614" y="340" class="mono ok">ros2_bridge</text>
+  <text x="846" y="340" text-anchor="end" class="mono muted">rosbridge_v2</text>
+
+  <text x="614" y="362" class="mono ok">serial_esp32</text>
+  <text x="846" y="362" text-anchor="end" class="mono muted">json_rpc_uart</text>
+
+  <text x="614" y="384" class="mono ok">lerobot_embodied</text>
+  <text x="846" y="384" text-anchor="end" class="mono muted">so100_aloha</text>
+
+  <text x="614" y="406" class="mono ok">mavlink_rover</text>
+  <text x="846" y="406" text-anchor="end" class="mono muted">mavlink_v2_udp</text>
+
+  <line x1="614" y1="422" x2="846" y2="422" stroke="#1e293b" stroke-width="1"/>
+  <text x="614" y="444" class="sans card-title">PERMISSION GATE</text>
+  <text x="614" y="465" class="mono muted">estop: ALWAYS ALLOWED</text>
+  <text x="614" y="483" class="mono muted">reset / actuate: requires permission</text>
+</svg>
