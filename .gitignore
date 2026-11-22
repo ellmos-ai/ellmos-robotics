@@ -1,6 +1,14 @@
 __pycache__/
 *.py[cod]
 .pytest_cache/
+.pytest_temp/
+.ruff_cache/
 dist/
 build/
 *.egg-info/
+*.db
+*.sqlite*
+*dump*
+MARKETING-LOG.txt
+LOCK*.txt
+LOCK-CACHE.*

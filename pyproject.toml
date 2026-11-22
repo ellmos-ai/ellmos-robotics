@@ -10,6 +10,22 @@ readme = "README.md"
 requires-python = ">=3.10"
 license = "MIT"
 authors = [{ name = "ellmos-ai" }]
+keywords = [
+    "robotics",
+    "mcp",
+    "model-context-protocol",
+    "safety-envelope",
+    "emergency-stop",
+    "fail-closed",
+    "ros2",
+    "lerobot",
+    "mavlink",
+    "esp32",
+    "simulation",
+    "embodied-ai",
+    "cli",
+    "zero-dependencies",
+]
 classifiers = [
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.10",
@@ -25,10 +41,17 @@ dev = ["pytest>=8.0"]
 [project.scripts]
 ellmos-robotics = "ellmos_robotics.cli:main"
 
+[project.urls]
+Homepage = "https://github.com/ellmos-ai/ellmos-robotics"
+Repository = "https://github.com/ellmos-ai/ellmos-robotics"
+Documentation = "https://github.com/ellmos-ai/ellmos-robotics#readme"
+Changelog = "https://github.com/ellmos-ai/ellmos-robotics/blob/main/CHANGELOG.md"
+Issues = "https://github.com/ellmos-ai/ellmos-robotics/issues"
+"LLM Entry" = "https://github.com/ellmos-ai/ellmos-robotics/blob/main/llms.txt"
+
 [tool.setuptools.packages.find]
 where = ["src"]
 
 [tool.pytest.ini_options]
 pythonpath = ["src"]
 testpaths = ["tests"]
-

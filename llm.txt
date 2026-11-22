@@ -1,0 +1,5 @@
+# llm.txt — Compatibility Pointer
+
+Canonical LLM entry point: [llms.txt](llms.txt)
+Product Skill (P-022): [SKILL.md](SKILL.md)
+Repository: https://github.com/ellmos-ai/ellmos-robotics
